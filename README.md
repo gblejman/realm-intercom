@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Realm - Intercom
 
-## Getting Started
+# Setup
 
-First, run the development server:
+## Local Setup
+
+Copy env.example into .env.[production|test|development].local and fill values for each env
+
+## Non Local Setup
+
+Go to project's settings/environment-variables and create an env vars for each env
+
+## Env vars
+
+- INTERCOM_TOKEN: the intercom app access token
+- INTERCOM_ADMIN_ID: the workspace admin user id used to send the first outbound message
+- INTERCOM_OUTBOUND_MESSAGE: the outbound message sent when first creating the advisor conversation
+- REALM_API_URL: the realm api url
+
+## References
+
+Intercom App:
+
+- Dev: https://app.intercom.com/a/apps/kfms5gdr/developer-hub/app-packages/83917/basic-info - Realm [TEST] workspace
+- Prod: <not yet promoted from test to prod>
+
+# Run local
+
+Start dev server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Check env
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Local: GET http://localhost:3000/api/config
+Vercel: GET [deploymentUrl]/api/config
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# CAVEATS
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Will temp use `user.social_facebook` field to persist the linking, until properly added in schema and user model
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```js
+JSON.stringify({
+  intercom_contact_id: string | null,
+  intercom_conversation_id: string | null,
+});
+```
