@@ -3,7 +3,8 @@ import * as jwt from "jsonwebtoken";
 import { Unauthorized, InternalServerError, isHttpError } from "http-errors";
 import pino from "pino";
 import config from "@/config/index";
-import { createApi } from "@/lib/realm/api";
+import { createRealmService } from "@/lib/realm-service";
+import { createAdvisory } from "@/lib/advisory-service";
 
 const logger = pino();
 
@@ -34,7 +35,7 @@ export const authN =
         throw new Unauthorized("Missing claims");
       }
 
-      const realm = createApi({
+      const realm = createRealmService({
         baseURL: config.realm.url,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,6 +62,7 @@ export const authN =
       req.ctx.logger = pino();
       req.ctx.realm = realm;
       req.ctx.user = { ...user, ...mockedUserFields };
+      req.ctx.advisoryService = createAdvisory({ realm });
 
       return handler(req, res);
     } catch (e) {
