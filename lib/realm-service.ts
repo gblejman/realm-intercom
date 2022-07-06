@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import pino from "pino";
 
 const logger = pino();
@@ -28,13 +28,23 @@ export const createRealmService = (options: AxiosRequestConfig) => {
   );
 
   const users = {
-    me: () => instance.request<RealmUser>({ method: "get", url: "/users/me" }),
-    update: ({ id, ...data }: { id: number | string; data: unknown }) =>
-      instance.request<RealmUser>({
+    me: () =>
+      instance.request({
+        method: "get",
+        url: "/users/me",
+      }) as unknown as RealmUser,
+    update: ({
+      id,
+      ...data
+    }: {
+      id: number | string;
+      [key: string]: unknown;
+    }) =>
+      instance.request({
         method: "post",
         url: `/users/${id}`,
         data,
-      }),
+      }) as unknown as RealmUser,
   };
 
   const api = {
