@@ -1,4 +1,7 @@
 import axios from "axios";
+import pino from "pino";
+
+const logger = pino();
 
 export const createClient = (options = {}) => {
   const instance = axios.create(options);
@@ -7,7 +10,7 @@ export const createClient = (options = {}) => {
     (config) => {
       const { method, baseURL, url, params, data } = config;
 
-      console.log("realm req:", {
+      logger.debug("realm req:", {
         method,
         url: `${baseURL}/${url}`,
         params,

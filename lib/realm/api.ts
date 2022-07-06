@@ -1,7 +1,8 @@
+import { AxiosRequestConfig } from "axios";
 import { createClient } from "./client";
 import { TUser } from "./types";
 
-export const createApi = (options = {}) => {
+export const createApi = (options: AxiosRequestConfig) => {
   const instance = createClient(options);
 
   const users = {

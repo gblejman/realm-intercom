@@ -52,6 +52,8 @@ export const authN =
         intercom_contact_id: null,
         intercom_conversation_id: null,
       });
+
+      // @ts-ignore
       const mockedUserFields = JSON.parse(user.social_facebook ?? defaultValue);
 
       // set some context accesible though the request
@@ -67,6 +69,7 @@ export const authN =
       let error = new InternalServerError();
 
       if (isHttpError(e)) {
+        // @ts-ignore
         error = e;
       }
 
