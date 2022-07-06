@@ -12,6 +12,7 @@ const INTERCOM_OUTBOUND_MESSAGE =
   "Welcome to Realm. We'd love to help you get started. What are you looking to do? ✨";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  // @ts-ignore
   const user: TUser = req.ctx.user;
 
   /**
@@ -173,6 +174,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   console.log("CONVERSATION", conversation);
 
+  // @ts-ignore
   const updatedUser = await req.ctx.realm.users.update({
     id: "me",
     social_facebook: JSON.stringify({

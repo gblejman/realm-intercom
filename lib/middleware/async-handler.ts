@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import * as createError from "http-errors";
 
+// @ts-ignore
 const buildError = (e) => {
   console.log("handler error", e);
 
@@ -16,6 +17,7 @@ const buildError = (e) => {
     error = { status, statusText, ...data };
   } else if (createError.isHttpError(e)) {
     // http error
+    // @ts-ignore
     error = e;
   } else {
     // regular exception, use default error

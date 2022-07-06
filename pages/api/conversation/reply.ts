@@ -5,6 +5,7 @@ import { authN } from "@/lib/middleware/auth";
 import { TUser } from "@/lib/realm/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  // @ts-ignore
   const { id, intercom_conversation_id }: TUser = req.ctx.user;
   const { body, attachment_urls } = req.body;
 
