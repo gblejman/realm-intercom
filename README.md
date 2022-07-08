@@ -17,12 +17,11 @@ Go to project's settings/environment-variables and create an env vars for each e
 - INTERCOM_OUTBOUND_MESSAGE: the outbound message sent when first creating the advisor conversation
 - REALM_API_URL: the realm api url
 
-## References
+## Intercom
 
-Intercom App:
+# App
 
-- Dev: https://app.intercom.com/a/apps/kfms5gdr/developer-hub/app-packages/83917/basic-info - Realm [TEST] workspace
-- Prod: <not yet promoted from test to prod>
+https://app.intercom.com/a/apps/kfms5gdr/developer-hub/app-packages/83917/basic-info
 
 # Run local
 
@@ -32,10 +31,20 @@ Start dev server:
 yarn dev
 ```
 
-# Check env
+# Branches
 
-Local: GET http://localhost:3000/api/config
-Vercel: GET [deploymentUrl]/api/config
+Branches:
+
+- prod: https://realm-intercom.vercel.app -> points to prod realm/intercom
+- staging: https://realm-intercom-git-staging-gblejman.vercel.app -> points to staging realm/intercom
+
+# Api
+
+- GET [url]/api/config: info about the environment running
+- GET [url]/api/advisory/conversation: fetches user conversation, sets it up if missing
+- POST [url]/api/advisory/conversation/reply: replies user conversation
+- GET [url]/api/setup: pre-emptively sets a conversation if missing
+- POST [url]/api/webhook: called by intercom with subscription event data
 
 # CAVEATS
 
