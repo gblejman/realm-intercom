@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import pino from "pino";
-
-const logger = pino();
+import logger from "@/lib/logger";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {

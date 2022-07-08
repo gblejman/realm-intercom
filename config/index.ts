@@ -8,6 +8,9 @@ const config = {
   realm: {
     url: process.env.REALM_API_URL,
   },
+  logger: {
+    level: process.env.LOG_LEVEL || "debug",
+  },
 };
 
 export default config;

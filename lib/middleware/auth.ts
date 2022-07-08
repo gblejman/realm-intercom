@@ -5,8 +5,7 @@ import pino from "pino";
 import config from "@/config/index";
 import { createRealmService } from "@/lib/realm-service";
 import { createAdvisory } from "@/lib/advisory-service";
-
-const logger = pino();
+import logger from "@/lib/logger";
 
 // Quick check for existing sub claim in decoded token, no verify
 export const authN =
@@ -59,7 +58,7 @@ export const authN =
 
       // set some context accesible though the request
       req.ctx = {};
-      req.ctx.logger = pino();
+      req.ctx.logger = logger;
       req.ctx.realm = realm;
       req.ctx.user = { ...user, ...mockedUserFields };
       req.ctx.advisoryService = createAdvisory({ realm });

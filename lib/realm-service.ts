@@ -1,7 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import pino from "pino";
-
-const logger = pino();
+import logger from "@/lib/logger";
 
 export const createRealmService = (options: AxiosRequestConfig) => {
   const instance = axios.create(options);
@@ -10,12 +8,15 @@ export const createRealmService = (options: AxiosRequestConfig) => {
     (config) => {
       const { method, baseURL, url, params, data } = config;
 
-      logger.debug("realm req:", {
-        method,
-        url: `${baseURL}/${url}`,
-        params,
-        data,
-      });
+      logger.debug(
+        {
+          method,
+          url: `${baseURL}${url}`,
+          params,
+          data,
+        },
+        "realm req"
+      );
 
       return config;
     },
