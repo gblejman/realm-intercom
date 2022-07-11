@@ -31,6 +31,12 @@ Start dev server:
 yarn dev
 ```
 
+## Create Local Tunnel so realm mobile doesn't complain about non-https
+
+- register an account with ngrok, register a local token
+- ngrok http 3000 --subdomain realm-intercom
+- in realm-native app > .env.development > fill ADVISORY_API_URL=<ngrok https url>/api/advisory
+
 # Branches
 
 Branches:
