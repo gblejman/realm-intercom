@@ -36,6 +36,8 @@ export const authN =
       const realm = createRealmService({
         baseURL: config.realm.url,
         headers: {
+          // Accept only json for api responses! If not set will return 200 html login web
+          Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
