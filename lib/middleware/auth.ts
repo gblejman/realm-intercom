@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import * as jwt from "jsonwebtoken";
 import { Unauthorized, InternalServerError, isHttpError } from "http-errors";
-import pino from "pino";
 import config from "@/config/index";
 import { createRealmService } from "@/lib/realm-service";
 import { createAdvisory } from "@/lib/advisory-service";
@@ -62,6 +61,8 @@ export const authN =
       req.ctx.realm = realm;
       req.ctx.user = { ...user, ...mockedUserFields };
       req.ctx.advisoryService = createAdvisory({ realm });
+
+      logger.debug({ userId: user.id }, "authed user");
 
       return handler(req, res);
     } catch (e) {
