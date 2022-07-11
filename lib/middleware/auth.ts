@@ -62,7 +62,7 @@ export const authN =
       req.ctx.user = { ...user, ...mockedUserFields };
       req.ctx.advisoryService = createAdvisory({ realm });
 
-      logger.debug({ userId: user.id }, "authed user");
+      logger.debug(user, "authed user");
 
       return handler(req, res);
     } catch (e) {
