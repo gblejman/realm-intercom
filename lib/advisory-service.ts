@@ -3,6 +3,7 @@ import { Operators, MessageType, RecepientType } from "intercom-client";
 import { RealmUser, RealmService } from "@/lib/realm-service";
 import { delay } from "@/lib/utils";
 import config from "@/config/index";
+import logger from "./logger";
 
 export const createAdvisory = ({ realm }: { realm: RealmService }) => {
   /**
@@ -64,18 +65,22 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
     let contact;
 
     // Find previously linked
+    logger.debug("find by user.intercom_contact_id");
+
     if (user.intercom_contact_id) {
       try {
         contact = await intercom.contacts.find({
           id: user.intercom_contact_id,
         });
       } catch (e) {
-        // ignore Not Found
-        console.log("Link not found", e);
+        // ignore
+        logger.debug("Not found by user.intercom_contact_id");
       }
     }
 
     // No contact, find by email if exists
+    logger.debug("find by user.email");
+
     if (!contact && user.email) {
       const searchContactRes = await intercom.contacts.search({
         data: {
@@ -92,8 +97,6 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
       }
     }
 
-    console.log("contact", contact);
-
     const upsertPayload = {
       externalId: String(user.id),
       email: user.email,
@@ -101,15 +104,19 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
       avatar: user.profile_image,
     };
 
-    console.log("upsertPayload", upsertPayload);
+    logger.debug({ contact, upsertPayload }, "upsert");
 
     // Upsert
     if (contact) {
+      logger.debug({ id: contact.id, ...upsertPayload }, "update");
+
       contact = await intercom.contacts.update({
         id: contact.id,
         ...upsertPayload,
       });
     } else {
+      logger.debug(upsertPayload, "create");
+
       contact = await intercom.contacts.createUser(upsertPayload);
     }
 
@@ -130,7 +137,7 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
       createConversationWithoutContactReply: true,
     });
 
-    console.log("message", message);
+    logger.debug(message, "message");
 
     let conversationId;
 
@@ -168,11 +175,14 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
       }),
     });
 
-    console.log("setup", {
-      contactId: contact.id,
-      messageId: message.id,
-      conversationId,
-    });
+    logger.debug(
+      {
+        contactId: contact.id,
+        messageId: message.id,
+        conversationId,
+      },
+      "setup finished"
+    );
 
     return updatedUser;
   };
