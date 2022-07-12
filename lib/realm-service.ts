@@ -6,7 +6,7 @@ export const createRealmService = (options: AxiosRequestConfig) => {
 
   instance.interceptors.request.use(
     (config) => {
-      const { method, baseURL, url, params, data, headers } = config;
+      const { method, baseURL, url, params, data } = config;
 
       logger.debug(
         {
@@ -14,7 +14,6 @@ export const createRealmService = (options: AxiosRequestConfig) => {
           url: `${baseURL}${url}`,
           params,
           data,
-          headers,
         },
         "realm req"
       );
