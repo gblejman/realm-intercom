@@ -64,7 +64,14 @@ export const authN =
       req.ctx.user = { ...user, ...mockedUserFields };
       req.ctx.advisoryService = createAdvisory({ realm });
 
-      logger.debug(user, "authed user");
+      logger.debug(
+        {
+          id: user.id,
+          intercom_contact_id: user.intercom_contact_id,
+          intercom_conversation_id: user.intercom_conversation_id,
+        },
+        "authed user"
+      );
 
       return handler(req, res);
     } catch (e) {
