@@ -107,17 +107,22 @@ export const createAdvisory = ({ realm }: { realm: RealmService }) => {
     logger.debug({ contact, upsertPayload }, "upsert");
 
     // Upsert
-    if (contact) {
-      logger.debug({ id: contact.id, ...upsertPayload }, "update");
+    try {
+      if (contact) {
+        logger.debug({ id: contact.id, ...upsertPayload }, "update");
 
-      contact = await intercom.contacts.update({
-        id: contact.id,
-        ...upsertPayload,
-      });
-    } else {
-      logger.debug(upsertPayload, "create");
+        contact = await intercom.contacts.update({
+          id: contact.id,
+          ...upsertPayload,
+        });
+      } else {
+        logger.debug(upsertPayload, "create");
 
-      contact = await intercom.contacts.createUser(upsertPayload);
+        contact = await intercom.contacts.createUser(upsertPayload);
+      }
+    } catch (e) {
+      logger.error(e, "could not upsert");
+      throw e;
     }
 
     // Create an in-app outbound message.
